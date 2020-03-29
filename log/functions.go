@@ -4,7 +4,7 @@ use it like zap, but refer via log.
 
 Package supports different logging levels,
 some widely used configuration options,
-and fast switching between sugar/desugar behavior.
+and good sugar behavior.
 
 For more details see zap, on which this package based: https://github.com/uber-go/zap
 */
@@ -13,6 +13,13 @@ package log
 import (
 	"go.uber.org/zap"
 )
+
+func init() {
+	if log.logger == nil {
+		log.logger = zap.NewExample()
+		log.sugar = log.logger.Sugar()
+	}
+}
 
 const (
 	defaultLevel    = zap.DebugLevel
@@ -82,4 +89,5 @@ func FromScratch(options map[string]interface{}) {
 //It ensures writing all messages before application finished.
 func Sync() {
 	log.logger.Sync()
+	log.sugar.Sync()
 }
